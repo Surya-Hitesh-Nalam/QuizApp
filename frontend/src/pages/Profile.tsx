@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { User, BarChart2, PieChart, Award, Clock } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useQuiz } from '../hooks/useQuiz';
@@ -6,10 +6,24 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart a
 
 const Profile: React.FC = () => {
   const { user } = useAuth();
-  const { quizzes, attempts, getUserAttempts } = useQuiz();
+  const { quizzes, attempts, getUserAttempts ,fetchQuizzes} = useQuiz();
   
-  const userAttempts = user ? getUserAttempts(user.id) : [];
-  const completedAttempts = userAttempts.filter((attempt) => attempt.completed);
+  useEffect(() => {
+      const fetchAttempts = async () => {
+        try {
+          if (user?._id) {
+            await getUserAttempts(user._id);
+            await fetchQuizzes();
+          }
+        } catch (error) {
+          console.error('Error fetching user attempts:', error);
+        }
+      };
+    
+      fetchAttempts();
+    }, [user?._id]);
+
+  const completedAttempts = attempts.filter((attempt) => attempt.completed);
   
   const totalQuizzesTaken = completedAttempts.length;
   const totalQuizzesAvailable = quizzes.filter((q) => q.published).length;
@@ -35,13 +49,13 @@ const Profile: React.FC = () => {
   
   const quizTypeData = [
     { name: 'Completed', value: completedAttempts.length },
-    { name: 'In Progress', value: userAttempts.length - completedAttempts.length },
-    { name: 'Available', value: totalQuizzesAvailable - userAttempts.length },
+    { name: 'In Progress', value: attempts.length - completedAttempts.length },
+    { name: 'Available', value: totalQuizzesAvailable - attempts.length },
   ];
 
   // Time spent data (in minutes)
   const timeSpentData = completedAttempts.map(attempt => {
-    const quiz = quizzes.find(q => q.id === attempt.quizId);
+    const quiz = quizzes.find(q => q._id === attempt.quizId);
     return {
       name: quiz?.title || 'Unknown Quiz',
       minutes: attempt.questionAttempts.reduce((acc, qa) => acc + qa.timeSpent, 0) / 60

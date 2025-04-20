@@ -19,15 +19,17 @@ const QuizResults: React.FC = () => {
     const fetchAttempt = async () => {
       if (id && attemptId) {
         const foundQuiz = quizzes.find((q) => q._id === id);
-        const foundAttempt = await getAttemptById(attemptId); // now returns data
-  
-        setQuiz(foundQuiz || null);
+        const foundAttempt = await getAttemptById(attemptId);
         setAttempt(foundAttempt || null);
+        setQuiz(foundQuiz || null);
+        
       }
     };
   
     fetchAttempt();
   }, [id, attemptId, quizzes, getAttemptById]);
+
+  console.log(attempt)
   
   
   if (!quiz || !attempt) {

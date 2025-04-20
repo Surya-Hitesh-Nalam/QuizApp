@@ -68,12 +68,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
   
       const userData = await res.json();
-  
-      // Store the token in localStorage
       if (userData.token) {
         localStorage.setItem('token', userData.token);
       }
-      console.log(userData)
       setUser(userData);
       setIsAuthenticated(true);
     } catch (err: any) {

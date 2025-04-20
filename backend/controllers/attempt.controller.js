@@ -24,7 +24,9 @@ exports.submitAnswer = async (req, res) => {
   const { questionId, selectedAnswers, timeSpent, hintsUsed, correct } = req.body;
 
   const attempt = await Attempt.findById(id);
-  console.log(attempt)
+  if (!attempt) {
+    return res.status(404).json({ error: 'Attempt not found' });
+  }
   const index = attempt.questionAttempts.findIndex((qa) => qa.questionId === questionId);
   const attemptData = { questionId, selectedAnswers, timeSpent, hintsUsed, correct };
 
@@ -42,6 +44,10 @@ exports.submitAnswer = async (req, res) => {
 exports.completeAttempt = async (req, res) => {
   const { id } = req.params;
   const attempt = await Attempt.findById(id);
+  if (!attempt) {
+    return res.status(404).json({ error: 'Attempt not found' });
+  }
+
   console.log(attempt)
   attempt.completed = true;
   attempt.endTime = new Date().toISOString();

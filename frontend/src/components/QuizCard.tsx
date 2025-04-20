@@ -13,7 +13,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz, onDelete }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
-  console.log(quiz)
   const handleViewQuiz = () => {
     navigate(`/quizzes/${quiz._id}`);
   };

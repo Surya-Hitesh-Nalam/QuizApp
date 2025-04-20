@@ -118,8 +118,6 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     set((state) => ({
       attempts: [...state.attempts, data],
     }));
-    console.log(data)
-
     return data._id;
   },
 
@@ -160,8 +158,6 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
   getAttemptById: async (attemptId: string) => {
     const res = await fetch(`http://localhost:3000/api/v1/attempts/${attemptId}`);
     const data = await res.json();
-    console.log(data);
-    
     set((state) => {
       const updated = state.attempts.filter((a) => a._id !== attemptId);
       return {

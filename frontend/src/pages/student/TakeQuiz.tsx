@@ -100,15 +100,16 @@ const TakeQuiz: React.FC = () => {
   
   const currentQuestion = questions[currentQuestionIndex];
   
-  const handleNextQuestion = (
+  const handleNextQuestion = async(
     correct: boolean,
+    timeSpent:number,
     selectedAnswers: string[],
     hintsUsed: number
   ) => {
     if (!attemptId) return;
     
     // Record the answer for the current question
-    submitQuestionAttempt(
+    await submitQuestionAttempt(
       attemptId,
       currentQuestion._id,
       selectedAnswers,
@@ -117,12 +118,12 @@ const TakeQuiz: React.FC = () => {
       correct
     );
     
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < questions.length -1) {
       // Move to next question
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // Complete the quiz attempt
-      completeQuizAttempt(attemptId);
+      await completeQuizAttempt(attemptId);
       navigate(`/quizzes/${id}/results?attemptId=${attemptId}`);
     }
   };

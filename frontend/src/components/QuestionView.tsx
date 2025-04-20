@@ -5,7 +5,7 @@ import { Question } from '../types';
 
 interface QuestionViewProps {
   question: Question;
-  onNext: (correct: boolean, selectedAnswers: string[], hintsUsed: number) => void;
+  onNext: (correct: boolean,timeSpent:number, selectedAnswers: string[], hintsUsed: number) => void;
   questionNumber: number;
   totalQuestions: number;
 }
@@ -58,7 +58,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({
       
       if (correct) {
         setTimeout(() => {
-          onNext(true, selectedOptions, hintsUsed);
+          onNext(true, timeSpent,selectedOptions, hintsUsed);
         }, 1500);
       }
       
@@ -79,7 +79,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({
     
     if (correct) {
       setTimeout(() => {
-        onNext(true, selectedOptions, hintsUsed);
+        onNext(true,timeSpent ,selectedOptions, hintsUsed);
       }, 1500);
     }
     
@@ -117,7 +117,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({
   };
   
   const handleNextQuestion = () => {
-    onNext(false, selectedOptions, hintsUsed);
+    onNext(false, timeSpent,selectedOptions, hintsUsed);
   };
 
   return (
