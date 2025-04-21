@@ -31,7 +31,6 @@ const Profile: React.FC = () => {
     ? completedAttempts.reduce((acc, curr) => acc + (curr.score || 0), 0) / totalQuizzesTaken
     : 0;
 
-  // Score distribution data
   const scoreDistribution = completedAttempts.reduce((acc, attempt) => {
     const scoreRange = Math.floor((attempt.score || 0) / 10) * 10;
     const rangeKey = `${scoreRange}-${scoreRange + 9}`;
@@ -43,8 +42,6 @@ const Profile: React.FC = () => {
     range,
     count,
   }));
-
-  // Quiz progress data
   const COLORS = ['#4F46E5', '#0EA5E9', '#A855F7', '#22c55e', '#f59e0b'];
   
   const quizTypeData = [

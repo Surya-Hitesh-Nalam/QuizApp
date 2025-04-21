@@ -23,7 +23,6 @@ const QuestionView: React.FC<QuestionViewProps> = ({
   const [timeSpent, setTimeSpent] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
   
-  // Reset state when question changes
   useEffect(() => {
     setSelectedOptions([]);
     setIsCorrect(null);
@@ -50,11 +49,10 @@ const QuestionView: React.FC<QuestionViewProps> = ({
   };
   
   const checkAnswer = () => {
-    // For single answer questions
     if (question.type === 'single') {
       const correct = selectedOptions[0] === question.correctAnswers[0];
       setIsCorrect(correct);
-      setShowFeedback(true);
+      //setShowFeedback(true);
       
       if (correct) {
         setTimeout(() => {
@@ -65,17 +63,15 @@ const QuestionView: React.FC<QuestionViewProps> = ({
       return correct;
     }
     
-    // For multiple answer questions
     const correctAnswersSet = new Set(question.correctAnswers);
     const selectedOptionsSet = new Set(selectedOptions);
     
-    // Check if selected options match exactly with correct answers
     const correct =
       correctAnswersSet.size === selectedOptionsSet.size &&
       [...correctAnswersSet].every((value) => selectedOptionsSet.has(value));
     
     setIsCorrect(correct);
-    setShowFeedback(true);
+    //setShowFeedback(true);
     
     if (correct) {
       setTimeout(() => {
@@ -116,8 +112,9 @@ const QuestionView: React.FC<QuestionViewProps> = ({
     setShowFeedback(false);
   };
   
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async() => {
     onNext(false, timeSpent,selectedOptions, hintsUsed);
+    console.log(timeSpent)
   };
 
   return (

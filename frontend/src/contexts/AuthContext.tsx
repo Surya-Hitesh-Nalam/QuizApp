@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useState, useEffect } from 'react';
 import { User, UserRole, AuthContextType } from '../types';
 
@@ -20,7 +21,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Try fetching current user from backend (if you implement a /me route)
     const fetchCurrentUser = async () => {
       try {
         const token = localStorage.getItem('token'); // Retrieve token from localStorage
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
         const res = await fetch('http://localhost:3000/api/v1/me', {
           headers: {
-            'Authorization': `Bearer ${token}`, // Include token in the Authorization header
+            'Authorization': `Bearer ${token}`, 
           },
         });
     
@@ -37,16 +37,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(userData);
           setIsAuthenticated(true);
         } else {
-          // If the response is not ok, redirect to login (e.g., token expired or invalid)
           setIsAuthenticated(false);
           setUser(null);
-          localStorage.removeItem('token'); // Optionally remove the token if expired
+          localStorage.removeItem('token');
         }
       } catch (err) {
         console.error('Not logged in or failed to fetch current user', err);
         setIsAuthenticated(false);
         setUser(null);
-        localStorage.removeItem('token'); // Optionally remove the token if there's an error
+        localStorage.removeItem('token'); 
       }
     };
     
@@ -98,7 +97,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
       const userData = await res.json();
   
-      // Store the token in localStorage
       if (userData.token) {
         localStorage.setItem('token', userData.token);
       }
@@ -117,7 +115,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         credentials: 'include',
       });
   
-      // Clear the token from localStorage on logout
       localStorage.removeItem('token');
     } catch (err) {
       console.error('Logout failed (server error)', err);

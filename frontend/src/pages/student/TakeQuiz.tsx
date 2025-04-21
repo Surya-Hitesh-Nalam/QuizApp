@@ -36,7 +36,6 @@ const TakeQuiz: React.FC = () => {
       fetchQuestions(); 
     }, [id]);
   
-  // Initialize quiz attempt on component mount
   useEffect(() => {
     const startAttempt = async () => {
       if (id && user) {
@@ -108,7 +107,6 @@ const TakeQuiz: React.FC = () => {
   ) => {
     if (!attemptId) return;
     
-    // Record the answer for the current question
     await submitQuestionAttempt(
       attemptId,
       currentQuestion._id,
@@ -119,10 +117,8 @@ const TakeQuiz: React.FC = () => {
     );
     
     if (currentQuestionIndex < questions.length -1) {
-      // Move to next question
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Complete the quiz attempt
       await completeQuizAttempt(attemptId);
       navigate(`/quizzes/${id}/results?attemptId=${attemptId}`);
     }

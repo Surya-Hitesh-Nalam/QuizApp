@@ -10,10 +10,8 @@ const Dashboard: React.FC = () => {
   const {  quizzes,attempts, getUserAttempts , fetchQuizzes } = useQuiz();
   const navigate = useNavigate();
 
-  
-
   useEffect(() => {
-    const token = localStorage.getItem('token'); // or sessionStorage.getItem('token')
+    const token = localStorage.getItem('token'); 
     console.log(token)
     if (!token) {
       navigate('/sign-in');
@@ -37,14 +35,12 @@ const Dashboard: React.FC = () => {
 
   const completedAttempts = attempts.filter((attempt) => attempt.completed);
   
-  // Stats
   const totalQuizzesTaken = completedAttempts.length;
   const totalQuizzesAvailable = quizzes.filter((q) => q.published).length;
   const averageScore = totalQuizzesTaken > 0
     ? completedAttempts.reduce((acc, curr) => acc + (curr.score || 0), 0) / totalQuizzesTaken
     : 0;
 
-  // Chart data
   const scoreDistribution = completedAttempts.reduce((acc, attempt) => {
     const scoreRange = Math.floor((attempt.score || 0) / 10) * 10;
     const rangeKey = `${scoreRange}-${scoreRange + 9}`;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 
 // Layouts
@@ -22,18 +22,19 @@ import NotFound from './pages/NotFound';
 
 // Route guards
 const PrivateRoute: React.FC<{ children: React.ReactNode; requiredRole?: string }> = ({ 
-  children, 
-  requiredRole 
+  children 
 }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    navigate('/login')
+    return null;
   }
   
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  //if (requiredRole && user?.role !== requiredRole) {
+    //return <Navigate to="/dashboard" replace />;
+  //}
   
   return <>{children}</>;
 };
